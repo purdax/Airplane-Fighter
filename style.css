@@ -1,0 +1,40 @@
+.table {
+    position: fixed;
+    height: 400px;
+    overflow: hidden;
+    width: 800px;
+    background-color: aqua;
+    margin: 40px 40px 10px 50px;
+    border: 10px solid black;
+}
+
+h1 {
+    text-align: center;
+    font-family: 'Chivo Mono', monospace;
+    text-decoration: underline;
+}
+
+#airplane {
+    position: relative;
+    height: 50px;
+    margin: 150px 80px 100px 100px;
+}
+
+#bomb {
+    height: 40px;
+}
+
+.explosion {
+    position: relative;
+    height: 300px;
+}
+
+#button {
+    position: fixed;
+    margin: 450px 50px ;
+}
+
+#restart {
+    position: fixed;
+    margin: 450px 50px;
+}
