@@ -29,9 +29,29 @@ h1 {
     height: 300px;
 }
 
+#score {
+    position: fixed;
+    text-align: center;
+    margin: 450px 240px ;
+    font-family: 'Chivo Mono', monospace;
+    text-decoration: underline;
+    font-size:xx-large;
+    color: bisque;
+}
+
+#record {
+    position: fixed;
+    text-align: center;
+    margin: 450px 740px ;
+    font-family: 'Chivo Mono', monospace;
+    text-decoration: double;
+    font-size: xx-large;
+    color:gold
+}
+
 #button {
     position: fixed;
-    margin: 450px 50px ;
+    margin: 450px 50px;
 }
 
 #restart {
