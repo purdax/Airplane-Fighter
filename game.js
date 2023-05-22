@@ -4,8 +4,22 @@ let airplane = null;
 let bombSpeed = 100
 let sendTheBombIn = 2000
 let stopBomb = false
+let yourScore = 0
 
 const init = () => {
+    if (localStorage.getItem('record') === null) {
+        localStorage.setItem('record', 0)
+    }
+    document.getElementById('record').innerHTML = 'Record: ' + localStorage.getItem('record') 
+
+    const score = setInterval(() => {
+        yourScore += 1
+        if (stopBomb ===false) {
+            document.getElementById('score').textContent = 'Your score is: ' + yourScore
+            localStorage.setItem('yourScore', yourScore)
+        }
+    }, 1000)
+
     airplane = document.getElementById('airplane')
     airplane.style.position = 'relative'
     airplane.style.top = '0px'
@@ -133,6 +147,14 @@ const gameOver = (bomb) => {
     restart.id = 'restart'
     restart.setAttribute('onclick', 'location.reload()')
     button.appendChild(restart)
+
+   if (localStorage.getItem('record') === null) {
+        localStorage.setItem('record', yourScore)
+   } 
+   if (parseInt(localStorage.getItem('record')) < yourScore) {
+        localStorage.setItem('record', yourScore)
+        document.getElementById('record').innerHTML = 'Record: ' + localStorage.getItem('record')
+   }
 }
 
 window.onload = init
