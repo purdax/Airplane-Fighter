@@ -58,3 +58,8 @@ h1 {
     position: fixed;
     margin: 450px 50px;
 }
+
+#bullet {
+    position: relative;
+    height: 10px;
+}
