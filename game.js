@@ -5,6 +5,9 @@ let bombSpeed = 100
 let sendTheBombIn = 2000
 let stopBomb = false
 let yourScore = 0
+let bulletRelease = false
+let bulletCopy = null
+let newBullet = true
 
 const init = () => {
     if (localStorage.getItem('record') === null) {
@@ -13,7 +16,7 @@ const init = () => {
     document.getElementById('record').innerHTML = 'Record: ' + localStorage.getItem('record') 
 
     const score = setInterval(() => {
-        yourScore += 1
+        // yourScore += 1
         if (stopBomb ===false) {
             document.getElementById('score').textContent = 'Your score is: ' + yourScore
             localStorage.setItem('yourScore', yourScore)
@@ -62,6 +65,9 @@ const getKeyAndMove = (e) => {
         case 40: //down arrow key
             moveDown();
             break;
+        case 32:
+            releaseBullet()  
+            break;  
     }
 }
 
@@ -86,6 +92,34 @@ const moveDown = () => {
     }
 }
 
+const releaseBullet = () => {
+    if (newBullet === true) {
+        newBullet = false
+        bulletRelease = true
+        let bullet = document.createElement('img')
+        bullet.setAttribute('src', 'arm.png')
+        bullet.id = 'bullet'
+        bullet.style.position = 'fixed'
+        bullet.style.top = parseInt(airplane.style.top) + 300 + "px"
+        bullet.style.left = parseInt(airplane.style.left) + 245 + "px"
+        bulletCopy = bullet
+
+        table.appendChild(bullet)
+        setInterval(() => {
+            if(parseInt(bullet.style.left) >= 815) {
+                bullet.style.display = 'none'
+                bullet.style.top = '-1000000px'
+                bullet.style.left = '-1000000px'
+                newBullet = true
+            }
+        }, 1)
+
+        setInterval(() => {
+            bullet.style.left = parseInt(bullet.style.left) + 10 + "px"
+        }, 15);
+    }
+}
+
 
 const generateBombs = () => {
     let top = Math.floor(Math.random() * (450 - 125 + 1) + 125)
@@ -98,7 +132,7 @@ const generateBombs = () => {
     bomb.style.bottom = '5px'
     bomb.style.left = '800px'
     table.appendChild(bomb)
-    checkImpact(bomb, airplane)
+    checkImpact(bomb, airplane, bulletCopy)
     sendBombtoTable(bomb)
 }
 
@@ -112,11 +146,29 @@ const sendBombtoTable = (bomb) => {
     }, bombSpeed);
 
     setInterval(() => {
-        checkImpact(bomb, airplane)
-    }, 1)  
+        checkImpact(bomb, airplane, bulletCopy)
+    }, 1)
+
+    setInterval(() => {
+        increaseScore(bomb, bulletCopy)
+    }, 250)
 }
 
-const checkImpact = (bomb, airplane) => {
+const checkImpact = (bomb, airplane, bulletCopy) => {
+    if (bulletRelease === true) {
+            if (parseInt(bomb.style.top) - parseInt(bulletCopy.style.top) >= -43 &&  parseInt(bomb.style.top) - parseInt(bulletCopy.style.top) <= 1) {
+                if (parseInt(bomb.style.left) - parseInt(bulletCopy.style.left) <= 30) {
+                    bomb.style.display = 'none'
+                    bomb.style.top = '0px'
+                    bomb.style.left = '0px'
+
+                    bulletCopy.style.display = 'none'
+                    bulletCopy.style.top = '0px'
+                    bulletCopy.style.left = '0px'
+                    newBullet = true
+                }
+            }
+    }
     let bombTop = parseInt(bomb.style.top)
     let airplaneTop = parseInt(airplane.style.top)
     let index = bombTop - airplaneTop
@@ -128,6 +180,18 @@ const checkImpact = (bomb, airplane) => {
             stopBomb = true
         }
    }
+}
+
+const increaseScore = (bomb, bulletCopy) => {
+    if (bulletCopy !== null) {
+        if (parseInt(bomb.style.top) - parseInt(bulletCopy.style.top) >= -43 &&  parseInt(bomb.style.top) - parseInt(bulletCopy.style.top) <= 1) {
+            if (parseInt(bomb.style.left) - parseInt(bulletCopy.style.left) <= 30) {
+                yourScore += 1
+                bomb.style.left = '10000000px'
+                document.getElementById('score').textContent = 'Your score is: ' + yourScore
+            }
+        }
+    }
 }
 
 
